@@ -9,22 +9,16 @@ import UIKit
 
 final class HomeViewController: UIViewController {
 
-    private let viewModel = HomeViewModel()
+    private lazy var homeView: HomeView = {
+        let view = HomeView()
+        if let navigationController = self.navigationController as? HomeNavigationController {
+            view.delegate = navigationController
+        }
+        return view
+    }()
 
-    init() {
-        super.init(nibName: nil, bundle: nil)
-        self.tabBarItem.title = viewModel.title
+    override func loadView() {
+        self.view = homeView
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.navigationController?.title = viewModel.title
-        self.navigationItem.title = viewModel.title
-        self.tabBarItem.image = viewModel.icon
-        self.view = HomeView(frame: self.view.frame)
-    }
 }
